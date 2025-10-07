@@ -11,6 +11,12 @@
 #include "storage.h"
 #include <string.h>
 
+/**
+ * @brief runs the repl
+ * @param argc the number of cli arguments
+ * @param argv the cli arguments
+ * @return returns 0 on success
+ */
 int main(int argc, char *argv[]) {
     // prints the help info if -h is passed
     if (argc >= 2 && !strcmp("-h", argv[1])) {
