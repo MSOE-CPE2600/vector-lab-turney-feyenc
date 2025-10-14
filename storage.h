@@ -2,7 +2,7 @@
  * @brief function headers for vector storage
  * @file storage.h
  * @author Charles Feyen
- * @date 9/30/2025
+ * @date 10/14/2025
  * Class: CPE 2600
  * Section: 121
  */
@@ -11,7 +11,7 @@
     #include "vector_entry.h"
 
     #define STORAGE_H
-    #define STORAGE_CAPACITY 10
+    #define DEFAULT_STORAGE_CAPACITY 4
 
     /**
      * @brief stores a pointer under the given name
@@ -29,7 +29,7 @@
     vector *get(const char * name);
 
     /**
-     * @brief clears the storage
+     * @brief clears the storage and resets the allocated memory
      */
     void clear();
 
@@ -37,4 +37,13 @@
      * @brief prints each vector
      */
     void list();
+    
+    /**
+     * @brief stores a named vector to a particular index
+     * @param name the name of the vector
+     * @param v the vector
+     * @param index the index
+     * @warning does not preform index out of bounds checking
+     */
+    void store_to(const char * name, const vector v, const unsigned int index);
 #endif
