@@ -1,3 +1,4 @@
 *.o
 *.d
 vector_calculator
+*.csv

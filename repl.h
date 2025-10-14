@@ -2,7 +2,7 @@
  * @brief functions for implementing the repl
  * @file repl.h
  * @author Charles Feyen
- * @date 10/6/2025
+ * @date 10/14/2025
  * Class: CPE 2600
  * Section: 121
  */
@@ -10,7 +10,10 @@
 #ifndef REPL_H
     #define REPL_H
     #define GET_NUMBER 80
+    #define TOK_SEP ", \r\n"
+
     #include <stdbool.h>
+    #include <stdio.h>
     #include "vector.h"
     #include "repl_command.h"
     #include "operator.h"
@@ -66,4 +69,11 @@
      * @brief prints the help message
      */
     void print_help();
+
+    /**
+     * @brief loads vectors from a csv file into storage
+     * @param csv the file pointer
+     * @return 0 on success, 1 on failure
+     */
+    int load(FILE *csv);
 #endif

@@ -9,6 +9,7 @@
 
 #ifndef STORAGE_H
     #include "vector_entry.h"
+    #include <stdio.h>
 
     #define STORAGE_H
     #define DEFAULT_STORAGE_CAPACITY 4
@@ -46,4 +47,10 @@
      * @warning does not preform index out of bounds checking
      */
     void store_to(const char * name, const vector v, const unsigned int index);
+
+    /**
+     * @brief saves all stored vectors to a csv file
+     * @param csv the file (must be opened in write mode)
+     */
+    void save(FILE *csv);
 #endif

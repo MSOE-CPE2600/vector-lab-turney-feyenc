@@ -119,3 +119,17 @@ void store_to(const char *name, const vector v, const unsigned int index) {
     name_ptr[strlen(name)] = '\0';
     vector_storage.entries[index] = (vector_entry) { name: name_ptr, v };
 }
+
+void save(FILE *csv) {
+    for (int i = 0; i < vector_storage.len; i++) {
+        vector_entry entry = vector_storage.entries[i];
+
+        if (entry.name != NULL) {
+             fprintf(csv, "%s,%lf,%lf,%lf\n", entry.name, entry.v.i, entry.v.j, entry.v.k);
+        } else {
+            fprintf(csv, "\n");
+        }
+    }
+
+    puts("saved all vectors");
+}

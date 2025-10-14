@@ -2,7 +2,7 @@
  * @brief functions for implementing the repl
  * @file repl.c
  * @author Charles Feyen
- * @date 10/7/2025
+ * @date 10/14/2025
  * Class: CPE 2600
  * Section: 121
  */
@@ -33,21 +33,17 @@ int prompt_parse_and_run() {
         return 1;
     }
 
-    // adds a space so the last token can be parsed
-    input[len - 1] = ' ';
-    input[len] = '\0';
-
     // parses and stores five tokens
     char *toks[5] = {
-        strtok(input, ", "),
-        strtok(NULL, ", "),
-        strtok(NULL, ", "),
-        strtok(NULL, ", "),
-        strtok(NULL, ", "),
+        strtok(input, TOK_SEP),
+        strtok(NULL, TOK_SEP),
+        strtok(NULL, TOK_SEP),
+        strtok(NULL, TOK_SEP),
+        strtok(NULL, TOK_SEP),
     };
 
     // logs an error if there are extra tokens
-    if (strtok(NULL, ", ") != NULL) {
+    if (strtok(NULL, TOK_SEP) != NULL) {
         puts("<invalid expression: extra tokens>");
         return 1;
     }
@@ -70,6 +66,42 @@ int prompt_parse_and_run() {
         return 1;
     case Help:
         print_help();
+        return 1;
+    case Load:
+        if (toks[1] == NULL) {
+            puts("<no file provided>");
+            return 1;
+        }
+
+        FILE *rcsv = fopen(toks[1], "r");
+
+        if (rcsv == NULL) {
+            printf("<No file: %s>\n", toks[1]);
+            return 1;
+        }
+
+        load(rcsv);
+
+        fclose(rcsv);
+
+        return 1;
+    case Save:
+        if (toks[1] == NULL) {
+            puts("<no file provided>");
+            return 1;
+        }
+
+        FILE *wcsv = fopen(toks[1], "w");
+
+        if (wcsv == NULL) {
+            printf("<No file: %s>\n", toks[1]);
+            return 1;
+        }
+
+        save(wcsv);
+
+        fclose(wcsv);
+
         return 1;
     default:
         break;
@@ -262,6 +294,14 @@ repl_command str_to_repl_command(const char *str) {
         return Help;
     }
 
+    if (!strcmp(str, "load")) {
+        return Load;
+    }
+
+    if (!strcmp(str, "save")) {
+        return Save;
+    }
+
     return None;
 }
 
@@ -291,10 +331,12 @@ operator str_to_op(const char *str) {
 
 void print_help() {
     puts("^");
-    puts("| Help: prints this help info");
-    puts("| Quit: exits the program");
-    puts("| List: lists stored variables");
-    puts("| Clear: clears stored variables");
+    puts("| help: prints this help info");
+    puts("| quit: exits the program");
+    puts("| list: lists stored variables");
+    puts("| clear: clears stored variables");
+    puts("| load file: (where file is a csv file) loads vectors from file into storage");
+    puts("| save file: (where file is a csv file) saves vectors from storage to file");
     puts("|");
     puts("| i j (where i and j are scalars) defines a vector");
     puts("| i j k (where i, j, and k are scalars) defines a vector");
@@ -311,4 +353,62 @@ void print_help() {
     puts("|");
     puts("| ? (where ? is an identifier) accesses the values assigned to ?");
     puts("v");
+}
+
+int load(FILE * csv) {
+    char buffer[GET_NUMBER + 1];
+    int n = 0;
+
+    while (!feof(csv)) {
+        // gets the line
+        fgets(buffer, GET_NUMBER, csv);
+
+        // prevents issues with file final newlines
+        size_t len = strlen(buffer);
+        buffer[len - 1] = ' ';
+
+        // gets the tokens
+        char *toks[4] = {
+            strtok(buffer, TOK_SEP),
+            strtok(NULL, TOK_SEP),
+            strtok(NULL, TOK_SEP),
+            strtok(NULL, TOK_SEP),
+        };
+
+        // skip the line if it is only spaces
+        if (toks[0] == NULL || !strcmp(toks[0], "")) {
+            continue;
+        }
+
+        // handles extra numbers
+        if (strtok(NULL, TOK_SEP) != NULL) {
+            puts("<file error: invalid vector: extra numbers>");
+            return 1;
+        }
+
+        // handles invalid numbers
+        if (!is_num(toks[1]) || !is_num(toks[2]) || !is_num(toks[3])) {
+            puts("<file error: invalid vector: invalid numbers>");
+            return 1;
+        }
+
+        // creates the vector
+        const vector v = new_vector(atof(toks[1]), atof(toks[2]), atof(toks[3]));
+
+        // stores the vector, handles errors
+        if (store(toks[0], v)) {
+            return 1;
+        }
+
+        // logs the vectors being stored
+        printf("%s = ", toks[0]);
+        println_vector(&v);
+
+        n++;
+    }
+
+    // prints how many vectors were loaded
+    printf("<loaded %d vectors>\n", n);
+
+    return 0;
 }

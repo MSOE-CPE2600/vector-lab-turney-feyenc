@@ -2,7 +2,7 @@
  * @brief enum for interpreting non math repl commands
  * @file repl_command.h
  * @author Charles Feyen
- * @date 9/30/2025
+ * @date 10/14/2025
  * Class: CPE 2600
  * Section: 121
  */
@@ -19,6 +19,8 @@
         List,
         Clear,
         Help,
+        Load,
+        Save,
         None,
     } repl_command;
 #endif
