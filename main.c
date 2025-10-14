@@ -5,7 +5,8 @@
  * @date 10/7/2025
  * Class: CPE 2600
  * Section: 121
- * Compile with: gcc -Wall -o Lab5 main.c repl.c storage.c vector_math.c
+ * 
+ * Compile with: gcc -Wall -o vector_calculator main.c repl.c storage.c vector_math.c
  */
 
 #include "repl.h"

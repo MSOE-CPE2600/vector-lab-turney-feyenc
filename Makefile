@@ -3,7 +3,7 @@ CFLAGS=-c -Wall
 LDFLAGS=
 SOURCES= main.c repl.c storage.c vector_math.c
 OBJECTS= $(SOURCES:.c=.o)
-EXECUTABLE= Lab5
+EXECUTABLE= vector_calculator
 
 all: $(SOURCES) $(EXECUTABLE)
 
