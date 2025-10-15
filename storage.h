@@ -38,15 +38,6 @@
      * @brief prints each vector
      */
     void list();
-    
-    /**
-     * @brief stores a named vector to a particular index
-     * @param name the name of the vector
-     * @param v the vector
-     * @param index the index
-     * @warning does not preform index out of bounds checking
-     */
-    void store_to(const char * name, const vector v, const unsigned int index);
 
     /**
      * @brief saves all stored vectors to a csv file

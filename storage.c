@@ -25,7 +25,7 @@ int store(const char * name, const vector v) {
         const vector_entry entry = vector_storage.entries[i];
 
         if (entry.name == NULL || !strcmp(name, entry.name)) {
-            store_to(name, v, i);
+            vector_storage.entries[i].v = v;
             return 0;
         }
     }
@@ -57,7 +57,11 @@ int store(const char * name, const vector v) {
     }
 
     // adds the vector to the end of the storage
-    store_to(name, v, vector_storage.len);
+    size_t name_len = strlen(name);
+    char *name_ptr = malloc(name_len + 1);
+    strcpy(name_ptr, name);
+    name_ptr[name_len] = '\0';
+    vector_storage.entries[vector_storage.len] = (vector_entry) { name: name_ptr, v };
     vector_storage.len++;
 
     return 0;
@@ -111,13 +115,6 @@ void list() {
             printf("<vector %d unused>\n", i);
         }
     }
-}
-
-void store_to(const char *name, const vector v, const unsigned int index) {
-    char *name_ptr = malloc(strlen(name) + 1);
-    strcpy(name_ptr, name);
-    name_ptr[strlen(name)] = '\0';
-    vector_storage.entries[index] = (vector_entry) { name: name_ptr, v };
 }
 
 void save(FILE *csv) {
