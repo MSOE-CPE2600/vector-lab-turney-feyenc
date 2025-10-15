@@ -360,12 +360,15 @@ int load(FILE * csv) {
     int n = 0;
 
     while (!feof(csv)) {
-        // gets the line
+        // clears buffer
+        buffer[0] = '\0';
+
+        // gets the line and stores it into the vector
         fgets(buffer, GET_NUMBER, csv);
 
-        // prevents issues with file final newlines
-        size_t len = strlen(buffer);
-        buffer[len - 1] = ' ';
+        if (!strcmp(buffer, "")) {
+            break;
+        }
 
         // gets the tokens
         char *toks[4] = {
