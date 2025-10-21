@@ -1,6 +1,6 @@
 # Overview
 
-This is a vector math REPL (Read-Execute-Print Loop). It preforms basic aritmetic operations on vectors and can store vectors in variables
+This is a vector math REPL (Read-Execute-Print Loop). It preforms basic arithmetic operations on vectors and can store vectors in variables
 
 # How to Build
 
